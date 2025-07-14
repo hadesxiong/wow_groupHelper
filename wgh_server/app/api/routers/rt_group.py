@@ -46,3 +46,23 @@ async def updateGroup(form_data: GroupAction):
     )
 
     return GroupRes(code=200, msg='success', target=rslt['id'], dt=rslt['dt'])
+
+# 定义成员CRUD接口
+@group_rt.post('/memberUpdate',
+               response_model=MemberRes,
+               response_model_exclude_unset=True)
+
+async def updateMember(form_data: MemberAction):
+
+    # 清理参数
+    fltr_data = {k:v for k,v in form_data.model_dump().items() if v is not None}
+    print(fltr_data)
+    rslt = await update_member_handler(
+        action_type = fltr_data.get('action_type', None),
+        group_id = fltr_data.get('group_id', None),
+        action_data = fltr_data.get('member_data', None),
+        usr_id = 'test'
+    )
+    print(rslt)
+
+    return MemberRes(code=200, msg='success', target='test' ,dt ='test')

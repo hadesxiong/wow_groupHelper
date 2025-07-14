@@ -22,6 +22,16 @@ class GroupInfo(BaseModel):
     class Config:
         extra = 'forbid'
 
+# 定义基本成员信息
+class MemberInfo(BaseModel):
+
+    char_id: str | None = Field(default=None, alias='character')
+    member_type: int | None = Field(default=None, alias='type')
+    member_class: int | None = Field(default=None, alias='class')
+
+    class Config:
+        extra = 'forbid'
+
 # 回复数据库模型
 class GroupIns(BaseModel):
 
@@ -48,12 +58,18 @@ class GroupQuery(BaseModel):
     class Oonfig:
         extra = 'forbid'
 
-# 定义动作神情
+# 定义动作申请
 class GroupAction(BaseModel):
 
     action_type: str | None = Field(default=None, alias='action')
     group_id: str | None = Field(default=None, alias='group')
     group_data: GroupInfo | None = Field(default=None, alias='data')
+
+class MemberAction(BaseModel):
+
+    action_type: str | None = Field(default=None,alias='action')
+    group_id: str | None = Field(default=None, alias='group')
+    member_data: MemberInfo | None = Field(default=None, alias='data')
 
 # 定义回复
 class GroupRes(ResBasic):
@@ -61,3 +77,8 @@ class GroupRes(ResBasic):
     target: str | List[Any] | Dict[str, Any] | None = Field(default=None)
     dt: str | None = Field(default=None)
     data: GroupIns | List[GroupIns] | None = Field(default=None)
+
+class MemberRes(ResBasic):
+
+    target: str | List[Any] | Dict[str, Any] | None = Field(default=None)
+    dt: str | None = Field(default=None)

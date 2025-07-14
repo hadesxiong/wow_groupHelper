@@ -7,7 +7,7 @@ from fastapi_pagination.ext.tortoise import paginate
 from tortoise.expressions import Q
 from typing import Dict, Any
 
-from app.api.schema.sch_group import GroupInfo
+from app.api.schema.sch_group import GroupInfo,MemberInfo
 from app.core.error import CustomHTTPException
 from app.models.group import GroupMain, MemberMain
 from app.utils.query import build_and_query, build_or_exp, get_dict_code
@@ -79,3 +79,35 @@ async def update_group_handler(
         
     else:
         raise CustomHTTPException(status_code=400, detail='方式错误', err_code=40007)
+    
+# 加入/离开/邀请/移出队伍
+async def update_member_handler(
+        action_type: str | None = None,
+        group_id: str | None = None,
+        action_data: MemberInfo | None = None,
+        usr_id: str | None = None):
+    
+    '''
+    处理逻辑
+    1. 查找group_id是否存在；
+    2. 根据action_type判断crud；
+    2.1. 加入队伍：判断队伍是否还有位置；是否需要同意；
+    2.2. 离开队伍：将人员状态调整为失效；
+    2.3. 邀请加入队伍：发出邀请，判断是否需要同意；
+    2.4. 移出队伍：将人员状态调整为失效；
+    '''
+    print(action_type)
+    print(action_data)
+    print(group_id)
+
+    if action_type == 'apply':
+
+        
+
+    try:
+        group_ins = await GroupMain.filter(group_id=group_id)
+        print(group_ins)
+        return "1"
+
+    except:
+        raise CustomHTTPException(status_code=400, detail='未找到对象', err_code=40008)
